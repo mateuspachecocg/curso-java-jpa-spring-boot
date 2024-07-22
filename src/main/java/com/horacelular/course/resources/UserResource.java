@@ -1,11 +1,16 @@
 package com.horacelular.course.resources;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.horacelular.course.entities.User;
+import com.horacelular.course.services.UserService;
 
 /**
  * UserResource
@@ -14,9 +19,19 @@ import com.horacelular.course.entities.User;
 @RequestMapping(value = "/users")
 public class UserResource {
 
+  @Autowired
+  private UserService service;
+
   @GetMapping
-  public ResponseEntity<User> findAll() {
-    User u = new User(1L, "Mateus", "mateus@gmail.com", "88981371512", "13245");
-    return ResponseEntity.ok().body(u);
+  public ResponseEntity<List<User>> findAll() {
+    List<User> list = service.findAll();
+    return ResponseEntity.ok().body(list);
+  }
+
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<User> findById(@PathVariable Long id) {
+    User obj = service.findByid(id);
+    return ResponseEntity.ok().body(obj);
+
   }
 }
