@@ -1,14 +1,19 @@
 package com.horacelular.course.entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_user")
-public class User {
+public class User implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +22,9 @@ public class User {
   private String email;
   private String phone;
   private String password;
+
+  @OneToMany(mappedBy = "client")
+  private List<Order> list = new ArrayList<>();
 
   public User() {
   }
@@ -68,4 +76,39 @@ public class User {
   public void setPassword(String password) {
     this.password = password;
   }
+
+  public List<Order> getList() {
+    return list;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    User other = (User) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "User [id=" + id + ", name=" + name + ", email=" + email + "]";
+  }
+
 }
