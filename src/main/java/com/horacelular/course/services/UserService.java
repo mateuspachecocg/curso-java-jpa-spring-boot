@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.horacelular.course.entities.User;
 import com.horacelular.course.repositories.UserRepository;
+import com.horacelular.course.services.exceptions.ResourceNotFoundException;
 
 /**
  * UserService
@@ -24,7 +25,7 @@ public class UserService {
 
   public User findByid(Long id) {
     Optional<User> obj = repository.findById(id);
-    return obj.get();
+    return obj.orElseThrow(() -> new ResourceNotFoundException(id));
   }
 
   public User insert(User obj) {
